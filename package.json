@@ -1,0 +1,27 @@
+{
+  "name": "install-peers-cli",
+  "version": "1.0.0",
+  "description": "CLI to install project's peerDependencies, without side effects.",
+  "main": "index.js",
+  "repository": "git@github.com:alexindigo/install-peers-cli.git",
+  "author": "Alex Indigo <iam@alexindigo.com>",
+  "license": "MIT",
+  "bin": {
+    "install-peers": "./install.js"
+  },
+  "keywords": [
+    "peerdependencies",
+    "peers",
+    "peerdeps",
+    "dev",
+    "devdeps",
+    "devdependencies",
+    "install",
+    "npm",
+    "yarn",
+    "local"
+  ],
+  "dependencies": {
+    "executioner": "^2.0.1"
+  }
+}
