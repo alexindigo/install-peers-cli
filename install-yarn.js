@@ -18,7 +18,7 @@ if (yarnModule) {
 
   executioner = require('executioner');
 
-  module.exports = function(packages, extra, done) {
+  module.exports = function(packages, done) {
 
     var options = {
       node    : node,

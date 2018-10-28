@@ -5,15 +5,7 @@ var fs          = require('fs')
 
   , rootPath    = path.resolve(__dirname, '..', '..')
 
-  , envLabel    = 'skip_install_peers_as_dev'
-
-  , defaultPeerInstallOptions = {
-    'save': false,
-    'save-bundle': false,
-    'save-dev': false,
-    'save-optional': false,
-    'save-prod': false
-  }
+  , envLabel    = 'install_peers_skip'
   ;
 
 // in npm@3+ preinstall happens in `node_modules/.staging` folder
@@ -30,7 +22,7 @@ function installPeerDeps() {
 
   // check for the "kill switch"
   if (process.env[envLabel]) {
-    console.log('Skipping installing peerDependencies as devDependencies.');
+    console.log('Skipping installing peerDependencies.');
     return;
   }
 
@@ -38,9 +30,7 @@ function installPeerDeps() {
   process.env[envLabel] = '1';
 
   getPackageConfig(rootPath, function(config) {
-    var peerDeps           = getPeerDeps(config)
-      , peerInstallOptions = getPeerInstallOptions(config)
-      ;
+    var peerDeps = getPeerDeps(config);
 
     if (!peerDeps) {
       console.error('Unable to find peerDependencies in ' + rootPath);
@@ -51,11 +41,10 @@ function installPeerDeps() {
     process.chdir(rootPath);
 
     // TODO: Add more alternatives
-    // TODO: Handle `peerInstallOptions` for npm and yarn
     if (installYarn) {
-      installYarn(peerDeps, peerInstallOptions, installDone.bind(null, 'yarn'));
+      installYarn(peerDeps, installDone.bind(null, 'yarn'));
     } else if (installNpm) {
-      installNpm(peerDeps, peerInstallOptions, installDone.bind(null, 'npm'));
+      installNpm(peerDeps, installDone.bind(null, 'npm'));
     }
   });
 }
@@ -65,7 +54,7 @@ function installDone(tool) {
   // cleanup env
   process.env[envLabel] = '';
 
-  console.log('Installed peerDependencies as devDependencies via ' + tool + '.');
+  console.log('Installed peerDependencies via ' + tool + '.');
 }
 
 function getPeerDeps(config) {
@@ -78,18 +67,6 @@ function getPeerDeps(config) {
   }
 
   return peerDeps;
-}
-
-function getPeerInstallOptions(config) {
-  var peerInstallOptions = defaultPeerInstallOptions;
-
-  if (typeof config.peerInstallOptions === 'object' && !Array.isArray(config.peerInstallOptions)) {
-    Object.keys(config.peerInstallOptions).forEach(function(key) {
-      peerInstallOptions[key] = config.peerInstallOptions[key];
-    });
-  }
-
-  return peerInstallOptions;
 }
 
 function getPackageConfig(packagePath, callback) {

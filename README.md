@@ -8,12 +8,12 @@ Works with `npm`, `yarn`.
 ### yarn
 
 ```
-$ yarn global add install-peers-cli
+$ yarn add --dev install-peers-cli
 ```
 ### npm
 
 ```
-$ npm install --global install-peers-cli
+$ npm install --save-dev install-peers-cli
 ```
 
 ## Usage
