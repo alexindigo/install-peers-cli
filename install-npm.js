@@ -1,27 +1,27 @@
 // do it inline in sync way
 // to make it work in non-npm environment
-var npmModule
+var npmBin
   , executioner
   , path = require('path')
   , node = process.argv[0]
   ;
 
-if (process.env['npm_execpath'] && process.env['npm_execpath'].match(/\/node_modules\/npm\/bin\/npm-cli\.js$/)) {
-  npmModule = require(path.resolve(process.env['npm_execpath'], '..', '..'));
+if (process.env['npm_execpath'] && process.env['npm_execpath'].match(/\/bin\/npm-cli\.js$/)) {
+  npmBin = path.resolve(process.env['npm_execpath']);
 }
 
 // if no npm module found, don't expose any function
 // to allow upstream modules find alternatives
 module.exports = null;
 
-if (npmModule) {
+if (npmBin) {
   executioner = require('executioner');
 
-  module.exports = function(packages, done) {
+  module.exports = function(packages, config, done) {
 
     var options = {
       node    : node,
-      npm     : npmModule,
+      npm     : npmBin,
       // escape package names@versions
       packages: packages.map((pkg) => '"' + pkg + '"').join(' ')
     };
@@ -32,10 +32,10 @@ if (npmModule) {
         process.exit(1);
         return;
       }
-      done();
+      done(result);
     });
 
     // Looks like yarn shows last line from the output of sub-scripts
-    console.log('Installing peerDependencies...');
+    console.log('- Installing ' + packages.length +  ' peerDependencies...');
   };
 }

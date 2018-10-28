@@ -1,7 +1,7 @@
 # install-peers-cli
 
 CLI to install project's peerDependencies, without side effects.
-Works with `npm`, `yarn`.
+Works with `npm`, `yarn`. Supports yarn workspaces flow.
 
 ## Install
 
@@ -28,7 +28,7 @@ Add package.json script:
 }
 ```
 
-Then run `yarn install-peers` (or `npm run install-peers`) to install `peer` dependencies of your project. It won't update lock files or modify package.json, keeping your setup pure and clean.
+Then run `yarn install-peers` (or `npm run install-peers`) to install `peer` dependencies of your project. It won't update lock files or modify package.json, keeping your setup pure and clean. Any other lifecycle script could be used depending on your use case.
 
 _You still may see "unmet peer dependency" warnings during regular install phase, due to installation flow of npm/yarn._
 

@@ -19,7 +19,11 @@
     "install",
     "npm",
     "yarn",
-    "local"
+    "local",
+    "workspaces",
+    "pure",
+    "lock",
+    "lockfile"
   ],
   "dependencies": {
     "executioner": "^2.0.1"

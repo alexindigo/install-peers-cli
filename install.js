@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var fs          = require('fs')
   , path        = require('path')
   , installNpm  = require('./install-npm.js')
@@ -32,7 +34,7 @@ function installPeerDeps() {
   getPackageConfig(rootPath, function(config) {
     var peerDeps = getPeerDeps(config);
 
-    if (!peerDeps) {
+    if (!peerDeps || !peerDeps.length) {
       console.error('Unable to find peerDependencies in ' + rootPath);
       return;
     }
@@ -42,19 +44,23 @@ function installPeerDeps() {
 
     // TODO: Add more alternatives
     if (installYarn) {
-      installYarn(peerDeps, installDone.bind(null, 'yarn'));
+      installYarn(peerDeps, config, installDone.bind(null, 'yarn', peerDeps.length));
     } else if (installNpm) {
-      installNpm(peerDeps, installDone.bind(null, 'npm'));
+      installNpm(peerDeps, config, installDone.bind(null, 'npm', peerDeps.length));
     }
   });
 }
 
-function installDone(tool) {
+function installDone(tool, packagesNum, result) {
 
   // cleanup env
   process.env[envLabel] = '';
 
-  console.log('Installed peerDependencies via ' + tool + '.');
+  // Summary
+  console.log('+ Successfully installed ' + packagesNum + ' peerDependencies via ' + tool + '.\n');
+
+  // Verbose
+  console.log(result);
 }
 
 function getPeerDeps(config) {
