@@ -25,11 +25,7 @@ if (yarnBin) {
 
     // adjust for workspace support
     if (config.workspaces) {
-      originalArgv = JSON.parse(process.env['npm_config_argv']).original;
-
-      if (originalArgv.includes('-W') || originalArgv.includes('--ignore-workspace-root-check')) {
-        ignoreWorkspaceRootCheck = '--ignore-workspace-root-check';
-      }
+      ignoreWorkspaceRootCheck = '--ignore-workspace-root-check';
     }
 
     var options = {
