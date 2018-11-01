@@ -21,10 +21,20 @@ installPeerDeps();
 // --- Subroutines
 
 function installPeerDeps() {
+  var argv;
+
+  // only run on `install`
+  if (process.env['npm_config_argv']) {
+    argv = JSON.parse(process.env['npm_config_argv']);
+    if (argv && argv['cooked'][0] !== 'install') {
+      console.log('Only run install-peer-deps after `install` command. Skipping.');
+      return;
+    }
+  }
 
   // check for the "kill switch"
   if (process.env[envLabel]) {
-    console.log('Skipping installing peerDependencies.');
+    console.log('Only run install-peer-deps once. Skipping.');
     return;
   }
 
