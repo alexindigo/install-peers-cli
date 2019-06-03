@@ -6,7 +6,8 @@ var yarnBin
   , node = process.argv[0]
   ;
 
-if (process.env['npm_execpath'] && process.env['npm_execpath'].match(/\/bin\/yarn\.js$/)) {
+const matched = `${path.sep}bin${path.sep}yarn.js`
+if (process.env['npm_execpath'] && process.env['npm_execpath'].includes(matched)) {
   yarnBin = path.resolve(process.env['npm_execpath']);
 }
 
@@ -15,7 +16,6 @@ if (process.env['npm_execpath'] && process.env['npm_execpath'].match(/\/bin\/yar
 module.exports = null;
 
 if (yarnBin) {
-
   executioner = require('executioner');
 
   module.exports = function(packages, config, done) {
@@ -36,7 +36,7 @@ if (yarnBin) {
       ignoreWorkspaceRootCheck: ignoreWorkspaceRootCheck
     };
 
-    executioner('${node} ${yarn} add ${ignoreWorkspaceRootCheck} --peer --pure-lockfile ${packages}', options, function(error, result) {
+    executioner('"${node}" "${yarn}" add ${ignoreWorkspaceRootCheck} --peer --pure-lockfile ${packages}', options, function(error, result) {
       if (error) {
         console.error('Unable to install peerDependencies', error);
         process.exit(1);
