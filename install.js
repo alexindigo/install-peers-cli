@@ -5,16 +5,10 @@ var fs          = require('fs')
   , installNpm  = require('./install-npm.js')
   , installYarn = require('./install-yarn.js')
 
-  , rootPath    = path.resolve(__dirname, '..', '..')
+  , rootPath    = process.cwd()
 
   , envLabel    = 'install_peers_skip'
   ;
-
-// in npm@3+ preinstall happens in `node_modules/.staging` folder
-// so if we ended up in `node_modules/` jump one level up
-if (path.basename(rootPath) === 'node_modules') {
-  rootPath = path.resolve(rootPath, '..');
-}
 
 installPeerDeps();
 
