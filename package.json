@@ -9,6 +9,9 @@
   "bin": {
     "install-peers": "./install.js"
   },
+  "scripts": {
+    "release": "scripts/release.sh"
+  },
   "keywords": [
     "peerdependencies",
     "peers",
