@@ -11,25 +11,23 @@ var fs          = require('fs')
   , envLabel    = 'install_peers_skip'
   ;
 
-  program
-  .option('-f, --force-run', 'Force Run')
-  .parse(process.argv)
+program.option('-f, --force-run', 'Force Run').parse(process.argv);
 
-  if (program.forceRun) { 
-    installPeerDeps({ forceRun: true }) 
-  } else { 
-    installPeerDeps() 
-  }
+if (program.forceRun) { 
+  installPeerDeps({ forceRun: true });
+} else { 
+  installPeerDeps();
+}
 
 // --- Subroutines
 
-function installPeerDeps({ forceRun = false }) {
+function installPeerDeps({ forceRun = false } = {}) {
   var argv;
 
   // only run on `install`
   if (process.env['npm_config_argv']) {
     argv = JSON.parse(process.env['npm_config_argv']);
-    if (argv && argv['cooked'][0] !== 'install' || !forceRun) {
+    if (!forceRun && argv && argv['cooked'][0] !== 'install') {
       console.log('Only run install-peer-deps after `install` command. Skipping.');
       return;
     }
