@@ -29,6 +29,7 @@
     "lockfile"
   ],
   "dependencies": {
+    "commander": "^2.20.0",
     "executioner": "^2.0.1"
   }
 }

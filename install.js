@@ -2,6 +2,7 @@
 
 var fs          = require('fs')
   , path        = require('path')
+  , program     = require('commander')
   , installNpm  = require('./install-npm.js')
   , installYarn = require('./install-yarn.js')
 
@@ -10,17 +11,25 @@ var fs          = require('fs')
   , envLabel    = 'install_peers_skip'
   ;
 
-installPeerDeps();
+  program
+  .option('-f, --force-run', 'Force Run')
+  .parse(process.argv)
+
+  if (program.forceRun) { 
+    installPeerDeps({ forceRun: true }) 
+  } else { 
+    installPeerDeps() 
+  }
 
 // --- Subroutines
 
-function installPeerDeps() {
+function installPeerDeps({ forceRun = false }) {
   var argv;
 
   // only run on `install`
   if (process.env['npm_config_argv']) {
     argv = JSON.parse(process.env['npm_config_argv']);
-    if (argv && argv['cooked'][0] !== 'install') {
+    if (argv && argv['cooked'][0] !== 'install' || !forceRun) {
       console.log('Only run install-peer-deps after `install` command. Skipping.');
       return;
     }
