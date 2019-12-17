@@ -27,7 +27,7 @@ function installPeerDeps({ forceRun = false } = {}) {
   // only run on `install`
   if (process.env['npm_config_argv']) {
     argv = JSON.parse(process.env['npm_config_argv']);
-    if (!forceRun && argv && argv['cooked'][0] !== 'install') {
+    if (!forceRun && argv && !['install', 'i'].includes(argv['cooked'][0])) {
       console.log('Only run install-peer-deps after `install` command. Skipping.');
       return;
     }
