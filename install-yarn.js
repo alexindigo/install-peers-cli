@@ -6,8 +6,8 @@ var yarnBin
   , node = process.argv[0]
   ;
 
-const matched = `${path.sep}bin${path.sep}yarn.js`
-if (process.env['npm_execpath'] && process.env['npm_execpath'].includes(matched)) {
+const matched = /(\/yarn(.*).js)/
+if (process.env['npm_execpath'] && matched.test(process.env['npm_execpath'])) {
   yarnBin = path.resolve(process.env['npm_execpath']);
 }
 
